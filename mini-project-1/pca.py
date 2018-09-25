@@ -7,20 +7,18 @@ import matplotlib.pyplot as plt
 def pca(X):
 
     # Mean normalize the samples
-    x_mean = np.sum(X,axis=0) / X.shape[1]
-    X = X - x_mean
+    x_mean = np.sum(X,axis=1) / X.shape[1]
+    for i in range(X.shape[1]):
+        X[:,i] = X[:,i] - x_mean
 
     # Compute lower dimensional subspace
     cov = np.dot(X.T,X) * 1/X.shape[1]
-    U,s,Vh = np.linalg.svd(cov) # Since d > N we compute svd on X.T*X
+    U,S,V = np.linalg.svd(cov) # Since d > N we compute svd on X.T*X
     U = np.dot(X,U) # Convert eigen vectors to d x 1
     
-    print(U.shape)
-
     # Normalize the eigen vectors
     for i,col in enumerate(U.T):
-        col = col / np.linalg.norm(col)
-        U[:,i] = col
+        U[:,i] = col / np.linalg.norm(col)
 
     return U
 
@@ -51,12 +49,16 @@ if __name__ == "__main__":
             X[:,i] = np.array(im).flatten()
 
     U = pca(X) # dim - d x d
-    
     U_red = U[:,:32] # Select first 32 components
     Z = np.dot(U_red.T,X)
-    X_new = np.dot(U_red,Z) # Reconstruct images
-    Image.fromarray(X_new[:,5].reshape(s_h,s_w)).show()
 
+    X_new = np.dot(U_red,Z) # Reconstruct images
+    x_mean = np.sum(X_new,axis=1) / X.shape[1] 
+    for i in range(X_new.shape[1]):
+        X_new[:,i] = X_new[:,i] + x_mean
+
+    Image.fromarray(X_new[:,0].reshape(s_h,s_w)).show()
+    Image.fromarray(X[:,0].reshape(s_h,s_w)).show()
 
     # Compute MSE for different k
     #K = np.arange(10,400)
