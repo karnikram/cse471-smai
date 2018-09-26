@@ -32,33 +32,27 @@ if __name__ == "__main__":
         print("<image-list>.txt line format: <image_path> <label>")
         sys.exit(1)
 
-    # Down sample for memory reasons 
-    scale = 0.5
-    im_w, im_h = Image.open(open(file_path,'r').readline().split(' ')[0]).size
-    s_w = int(im_w * scale)
-    s_h = int(im_h * scale)
-
     # Load images from the specified list and load into matrix
     n = sum(1 for l in open(file_path,'r'))
-    X = np.empty((s_w*s_h, n))
+    im_w, im_h = Image.open(open(file_path,'r').readline().strip().split()[0]).size
+    X = np.empty((im_w*im_h, n))
 
     with open(file_path,'r') as f:
         for i, l in enumerate(f):
-            ls = l.split(' ')
-            im = Image.open(ls[0]).convert('L').resize((s_w,s_h))
-            X[:,i] = np.array(im).flatten()
+            X[:,i] = np.array(Image.open(l.strip().split()[0]).convert('L')).flatten()
 
     U = pca(X) # dim - d x d
     U_red = U[:,:32] # Select first 32 components
     Z = np.dot(U_red.T,X)
 
     X_new = np.dot(U_red,Z) # Reconstruct images
-    x_mean = np.sum(X_new,axis=1) / X.shape[1] 
-    for i in range(X_new.shape[1]):
-        X_new[:,i] = X_new[:,i] + x_mean
 
-    Image.fromarray(X_new[:,0].reshape(s_h,s_w)).show()
-    Image.fromarray(X[:,0].reshape(s_h,s_w)).show()
+    #x_mean = np.sum(X_new,axis=1) / X.shape[1] 
+    #for i in range(X_new.shape[1]):
+        #X_new[:,i] = X_new[:,i] + x_mean
+
+    Image.fromarray(X_new[:,0].reshape(im_h,im_w)).show()
+    Image.fromarray(X[:,0].reshape(im_h,im_w)).show()
 
     # Compute MSE for different k
     #K = np.arange(10,400)
