@@ -9,8 +9,8 @@ def pca(X):
     for i in range(X.shape[1]):
         X[:,i] = X[:,i] - x_mean
 
-    # Compute lower dimensional subspace
-    COV = np.dot(X.T,X) * 1/X.shape[1]
+    # Compute subspace
+    COV = np.dot(X.T,X) * 1/X.shape[1] # since d > n
     U,S,V = np.linalg.svd(COV)
     U = np.dot(X,U)
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
         test_file_path = sys.argv[2]
 
     except IndexError:
-        print('Usage: naive_bayes.py <path-to-train-file> <path-to-test-file>')
+        print('Correct usage: python naive_bayes.py <path-to-train-file> <path-to-test-file>')
         sys.exit(1)
 
     ##################
@@ -97,9 +97,7 @@ if __name__ == '__main__':
     # Bayesian classification
 
     for z in Z.T:
-
         likelihoods = np.ones((num_labels))
-
         for i in range(num_labels):
             for j in range(k):
                 likelihoods[i] *= gaussian_density(z[j],means[j,i],variances[j,i])
