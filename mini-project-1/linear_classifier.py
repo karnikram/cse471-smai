@@ -4,10 +4,6 @@ from PIL import Image
 
 # Run pca on X and return reduced subspace U
 def pca(X):
-    # Mean normalization
-    x_mean = np.sum(X,axis=1) / X.shape[1]
-    for i in range(X.shape[1]):
-        X[:,i] = X[:,i] - x_mean
 
     # Compute subspace
     COV = np.dot(X.T,X) # since d > n
@@ -36,7 +32,7 @@ def jacobian(X,Y,classes,W):
     J = np.empty((W.shape[0],num_classes))
 
     for i in range(num_classes):
-        j = 0
+        j = np.zeros((W.shape[0]))
         for n in range(num_imgs):
 
             if(Y[n] == classes[i]):
@@ -45,20 +41,20 @@ def jacobian(X,Y,classes,W):
                 indicator = 0
 
             normalization = sum([np.exp(np.dot(w.T,X[:,n])) for w in W.T])
+            print(normalization)
             j += -1 * X[:,n] * (1 * indicator - np.exp(np.dot(W[:,i].T,X[:,n]))/normalization)
 
         J[:,i] = j
 
     return J
 
-
 # Trains weight vectors W to minimize softmax cost function
 def grad_desc(X,Y,classes,W):
     
     num_classes = len(classes)
 
-    max_num_iters = 10
-    l_rate = 0.0001
+    max_num_iters = 1
+    l_rate = 0.01
     threshold = 0.001
 
     iter_no = 0
@@ -83,9 +79,9 @@ if __name__ == '__main__':
         print('Correct usage: linear_classifier.py <path-to-train-file> <path-to-test-file>')
         sys.exit(1)
 
-    #################
-    ###  Training ###
-    #################
+    ##################
+    ###  Training  ###
+    ##################
 
     # Create X matrix of size d x n, list Y for labels
     n = sum(1 for l in open(train_file_path,'r'))
@@ -102,6 +98,11 @@ if __name__ == '__main__':
 
     classes = list(set(Y)) 
 
+    # Mean normalization
+    x_mean = np.sum(X,axis=1) / X.shape[1]
+    for i in range(X.shape[1]):
+        X[:,i] = X[:,i] - x_mean
+
     # Run PCA and obtain the reduced representation of X, Z
     U = pca(X)
     k = 32
@@ -109,7 +110,7 @@ if __name__ == '__main__':
     Z = np.dot(U_red.T,X)
 
     # Train for weights
-    W = np.ones((k,len(classes))) # initial estimate
+    W = np.random.randn(k,len(classes)) * 0.0001 # initial estimate
     W_hat = grad_desc(Z,Y,classes,W)
 
     #################
@@ -123,6 +124,10 @@ if __name__ == '__main__':
     with open(test_file_path,'r') as f:
         for i, l in enumerate(f):
             X[:,i] = np.array(Image.open(l.strip()).convert('L')).flatten()
+
+    # Mean normalization
+    for i in range(X.shape[1]):
+        X[:,i] = X[:,i] - x_mean
 
     Z = np.dot(U_red.T,X)
 
