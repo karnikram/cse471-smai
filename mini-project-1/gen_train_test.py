@@ -17,15 +17,19 @@ n = len(ls)
 train_file = open('train.txt','w')
 test_file = open('test.txt','w')
 gt_file = open('gt.txt','w')
+list_file = open('list.txt','w') # for part 1
 
 for i,l in enumerate(ls):
     if(i <= 0.8 * n):
         train_file.write(l + " " + l.split("/")[2].split("_")[0] + "\n")
+        list_file.write(l + "\n")
 
     else:
         test_file.write(l + "\n")
         gt_file.write(l.split("/")[2].split("_")[0] + "\n")
+        list_file.write(l + "\n")
 
 train_file.close()
 test_file.close()
 gt_file.close()
+list_file.close()

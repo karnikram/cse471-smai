@@ -8,7 +8,7 @@ analysis of all images combined. That will be used to get a small
 number of principal eigen vectors to convert each image to a reduced
 vector. Then you will learn a classifier using naive bayes method a
 linear classifier using gradient descent. You will submit your codes and
-a report pdf in your final submission. You will use python2 for this
+a report pdf in your final submission. You will use python3 for this
 mini-project.
 
 ### Dataset
@@ -29,12 +29,6 @@ mini-project.
   Plot a graph showing the total mean square error over all train images
   vs the number of principal components used to reconstruct. Include
   this plot in your submission. (Use a reasonable range for number of components)
-
-- Decide $N$, the number of principal components required such that the
-  reconstructed images will have mean squared error less than 20% over
-  all train images. Display those $N$ principal components as
-  reconstructed images.  You will see some base structures of the
-  faces. Include these images in your report.
 
 - Use scatterplots to examine how the images are clustered in the 1D, 2D
   and 3D space using the required number of principal components.
