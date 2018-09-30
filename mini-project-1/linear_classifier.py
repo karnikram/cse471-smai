@@ -25,6 +25,20 @@ def softmax(x,W):
 
     return h
 
+# Computes softmax cost
+def softmax_cost(X,Y,classes,W):
+    num_imgs = len(Y)
+    num_classes = len(classes)
+
+    c = 0
+
+    for i in range(num_imgs):
+        normalization = sum([np.exp(np.dot(w.T,X[:,i])) for w in W.T])
+        for j in range(num_classes):
+            c -= 1 * int(Y[i] == classes[j]) * np.log(np.exp(np.dot(W[:,j].T,X[:,i]))/normalization)
+
+    return c
+
 # Computes and returns the jacobian for minimization
 def jacobian(X,Y,classes,W):
     num_imgs = len(Y)
@@ -35,13 +49,8 @@ def jacobian(X,Y,classes,W):
         j = np.zeros((W.shape[0]))
         for n in range(num_imgs):
 
-            if(Y[n] == classes[i]):
-                indicator = 1
-            else:
-                indicator = 0
-
             normalization = sum([np.exp(np.dot(w.T,X[:,n])) for w in W.T])
-            j += -1 * X[:,n] * (1 * indicator - np.exp(np.dot(W[:,i].T,X[:,n]))/normalization)
+            j += -1 * X[:,n] * (1 * int(Y[n] == classes[i]) - np.exp(np.dot(W[:,i].T,X[:,n]))/normalization)
 
         J[:,i] = j
 
@@ -52,19 +61,23 @@ def grad_desc(X,Y,classes,W):
     
     num_classes = len(classes)
 
-    max_num_iters = 1
-    l_rate = 0.01
+    max_num_iters = 100
+    l_rate = 0.000000001
     threshold = 0.001
 
     iter_no = 0
     J = jacobian(X,Y,classes,W)
+    cost = softmax_cost(X,Y,classes,W)
+    prev_cost = 0
 
-    while(iter_no < max_num_iters): #and np.sum(step) < threshold):
+    while((iter_no < max_num_iters) and abs(prev_cost - cost) > threshold):
         for i in range(num_classes):
             W[:,i] -= l_rate * J[:,i]
 
+        prev_cost = cost
         iter_no += 1
         J = jacobian(X,Y,classes,W)
+        cost = softmax_cost(X,Y,classes,W)
 
     return W
 

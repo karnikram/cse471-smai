@@ -8,7 +8,7 @@ gt_path = "./gt.txt"
 pred_path = "./pred.txt"
 
 # run classifier and store output in pred_path
-script_path = "./naive_bayes.py"
+script_path = "./linear_classifier.py"
 os.system("python3 {} {} {} > {}".format(script_path, train_path, test_path, pred_path))
 
 """
