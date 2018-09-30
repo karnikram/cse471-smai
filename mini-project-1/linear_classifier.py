@@ -41,7 +41,6 @@ def jacobian(X,Y,classes,W):
                 indicator = 0
 
             normalization = sum([np.exp(np.dot(w.T,X[:,n])) for w in W.T])
-            print(normalization)
             j += -1 * X[:,n] * (1 * indicator - np.exp(np.dot(W[:,i].T,X[:,n]))/normalization)
 
         J[:,i] = j

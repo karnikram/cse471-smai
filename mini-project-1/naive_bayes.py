@@ -1,6 +1,6 @@
+import sys
 from PIL import Image
 import numpy as np
-import sys
 
 # Run pca on X and return reduced subspace U
 def pca(X):
@@ -18,8 +18,8 @@ def pca(X):
 
 def gaussian_density(x,mu,var):
 
-    p = 1/(((2*np.pi)**1/2) * (var ** 1/2))* \
-            np.exp(-1/2 * ((x - mu) / (var ** 1/2))**2)
+    p = 1/(np.sqrt(2 * np.pi * var)) *  \
+            np.exp((x - mu) * (x - mu) / (-2 * var))
 
     return p
 
@@ -95,7 +95,7 @@ if __name__ == '__main__':
 
     # Mean normalization
     for i in range(X.shape[1]):
-        X[:,i] = X[;,i] - x_mean
+        X[:,i] = X[:,i] - x_mean
 
     Z = np.dot(U_red.T,X)
 
@@ -106,5 +106,4 @@ if __name__ == '__main__':
             for j in range(k):
                 likelihoods[i] *= gaussian_density(z[j],means[j,i],variances[j,i])
 
-        print(likelihoods)
         print(classes[np.argmax(likelihoods)])
