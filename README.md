@@ -15,3 +15,4 @@ hw-10: Principal Component Analysis<br>
 hw-13: Support vector machines<br>
 [hw-14](./hw14/): Support vector machines<br>
 [hw-15](./hw15/): Kernels<br>
+[hw-16](./hw16/): LDA and Perceptron Neuron
