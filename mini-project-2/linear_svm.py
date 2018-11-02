@@ -66,3 +66,19 @@ for c in c_choices:
 for c in sorted(c_to_accuracies):
     for accuracy in c_to_accuracies[c]:
         print('c = {}, accuracy = {}'.format(c,accuracy))
+
+for c in c_choices:
+    accuracies = c_to_accuracies[c]
+    plt.scatter([c]*len(accuracies),accuracies)
+
+mean_accuracies = np.array([np.mean(a) for c,a in sorted(c_to_accuracies.items())])
+std_accuracies = np.array([np.std(a) for c,a in sorted(c_to_accuracies.items())])
+plt.errorbar(c_choices,mean_accuracies,yerr=std_accuracies)
+plt.title('Cross-validation on C')
+plt.xlabel('C')
+plt.ylabel('Cross-validation accuracy')
+plt.savefig('c-cross-validate.png',bbox_inches='tight')
+
+print('Best choice for C from cross-validation: {}'.format(best_c))
+print('Validation accuracies for best C: {}'.format(c_to_accuracies[best_c]))
+print('Test set accuracy of best linear svm: {}'.format(best_lsvm.score(Xdev_te,Ydev_te)))
