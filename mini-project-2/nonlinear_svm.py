@@ -1,16 +1,50 @@
 import data_utils
-import sys
+import argparse
 import numpy as np
+
+from sklearn.decomposition import PCA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.svm import SVC
+
 import matplotlib.pyplot as plt
 from copy import deepcopy
+import time
 
 plt.switch_backend('agg')
+parser = argparse.ArgumentParser()
+parser.add_argument("--mean_sub", help="Perform mean subtraction on the features", action="store_true")
+parser.add_argument("--scaling", help="Scale features to [0 1] range", action="store_true")
+parser.add_argument("--pca", help="Perform PCA on features", action="store_true")
+parser.add_argument("--lda", help="Perform LDA on features", action="store_true")
+
+args = parser.parse_args()
 
 # Load data
 Xtr, Ytr, Xte, Yte = data_utils.load_cifar10('./cifar-10-batches-py')
 num_train_samples = Xtr.shape[0]
 num_test_samples = Xte.shape[0]
+
+# Unit scaling and mean subtraction
+if(args.scaling):
+    Xtr = Xtr/255
+    Xte = Xte/255
+
+if(args.mean_sub):
+    mean_image = np.mean(Xtr,axis=0)
+    Xtr = Xtr - mean_image
+    Xte = Xte - mean_image
+
+if(args.pca):
+    pca = PCA(n_components=32) #TODO
+    pca.fit(Xtr)
+    pca.transform(Xtr)
+    pca.transform(Xte)
+
+if(args.lda):
+    lda = LDA(n_components=100) #TODO
+    lda.fit(Xtr,Ytr)
+    lda.transform(Xtr)
+    lda.transform(Xte)
 
 # Sanity checks
 print('Shape of train data: {}'.format(Xtr.shape))
@@ -27,14 +61,6 @@ Ydev_tr = Ytr[mask]
 mask = np.random.choice(num_test_samples, int(num_dev_samples/2), replace=False)
 Xdev_te = Xte[mask]
 Ydev_te = Yte[mask]
-
-# Preprocessing
-
-# Unit normalization?
-# Mean normalization
-# PCA
-# LDA
-# Feature representations?
 
 # SVM Classifier
 svm = SVC()
