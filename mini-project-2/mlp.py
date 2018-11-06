@@ -62,7 +62,8 @@ print('Shape of train labels: {}'.format(Ytr.shape))
 print('Shape of test data: {}'.format(Xte.shape))
 print('Shape of test labels: {}'.format(Yte.shape))
 
-mlp = MLPClassifier()
+# Mult-layer Perceptron classifier
+mlp = MLPClassifier(hidden_layer_sizes=(1500,))
 mlp.fit(Xdev_tr,Ydev_tr)
 
 print('Train set accuracy of mlp: {}'.format(mlp.score(Xdev_tr,Ydev_tr)))

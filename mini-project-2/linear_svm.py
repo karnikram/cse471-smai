@@ -74,8 +74,8 @@ for i in range(10):
 
 #c_choices = [c for i in range(10): c * (2**2)] #TODO
 num_folds = 5
-Xtr_folds = np.split(Xtr,num_folds)
-Ytr_folds = np.split(Ytr,num_folds)
+Xtr_folds = np.split(Xdev_tr,num_folds)
+Ytr_folds = np.split(Ydev_tr,num_folds)
 
 c_to_accuracies = {}
 for c in c_choices:
@@ -110,5 +110,4 @@ plt.ylabel('Cross-validation accuracy')
 plt.savefig('c-cross-validate.png',bbox_inches='tight')
 
 print('Best choice for C from cross-validation: {}'.format(best_c))
-print('Validation accuracies for best C: {}'.format(c_to_accuracies[best_c]))
 print('Test set accuracy of best linear svm: {}'.format(best_lsvm.score(Xte,Yte)))

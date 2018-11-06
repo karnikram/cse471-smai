@@ -98,5 +98,4 @@ for c,g in sorted(cg_to_accuracies):
         print('c = {}, g = {}, accuracy = {}'.format(c,g,accuracy))
 
 print('Best choice for C, gamma from cross-validation: {}, {}'.format(best_c,best_g))
-print('Validation accuracies for best C, Gamma: {}'.format(cg_to_accuracies[(best_c,best_g)]))
-print('Test set accuracy of best linear svm: {}'.format(best_svm.score(Xdev_te,Ydev_te)))
+print('Test set accuracy of best linear svm: {}'.format(best_svm.score(Xte,Yte)))

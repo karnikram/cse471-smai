@@ -62,6 +62,47 @@ mask = np.random.choice(num_test_samples, int(num_dev_samples/2), replace=False)
 Xdev_te = Xte[mask]
 Ydev_te = Yte[mask]
 
+# Logistic regression classifier
 lr = LogisticRegression()
-lr.fit(Xdev_tr,Ydev_tr)
-print('Test set accuracy score of Logistic regression classifier: {}'.format(lr.score(Xdev_te,Ydev_te)))
+best_lr = None
+best_mean_accuracy = 0
+
+# K-fold cross-validation for hyperparameter C
+c_choices = [0.1, 1, 10, 100]
+num_folds = 5
+Xtr_folds = np.split(Xdev_tr,num_folds) # split Xtr into 5 equal sub-arrays along axis 0
+Ytr_folds = np.split(Ydev_tr,num_folds)
+
+for c in c_choices:
+    lr.set_params(C=c)
+    c_accuracy = np.zeros(num_folds)
+    for i in range(num_folds):
+        tr_data = np.concatenate(Xtr_folds[:i]+Xtr_folds[i+1:])
+        tr_labels = np.concatenate(Ytr_folds[:i]+Ytr_folds[i+1:])
+        lr.fit(tr_data,tr_labels)
+        c_accuracy[i] = lr.score(Xtr_folds[i],Ytr_folds[i])
+
+    if(np.mean(c_accuracy) >= best_mean_accuracy):
+        best_mean_accuracy = np.mean(c_accuracy)
+        best_c = c
+        best_lr = deepcopy(lr)
+    c_to_accuracies[c] = c_accuracy
+
+for c in sorted(c_to_accuracies):
+    for accuracy in c_to_accuracies[c]:
+        print('c = {}, accuracy = {}'.format(c,accuracy))
+
+for c in c_choices:
+    accuracies = c_to_accuracies[c]
+    plt.scatter([c]*len(accuracies),accuracies)
+
+mean_accuracies = np.array([np.mean(a) for c,a in sorted(c_to_accuracies.items())])
+std_accuracies = np.array([np.std(a) for c,a in sorted(c_to_accuracies.items())])
+plt.errorbar(c_choices,mean_accuracies,yerr=std_accuracies)
+plt.title('Cross-validation on C')
+plt.xlabel('C')
+plt.ylabel('Accuracy')
+plt.savefig('plots/lr-c-validation.png',bbox_inches='tight')
+
+print('Best choice for C from 5-fold cross-validation: {}'.format(best_c))
+print('Test set accuracy score of best Logistic regression classifier: {}'.format(best_lr.score(Xte,Yte)))
