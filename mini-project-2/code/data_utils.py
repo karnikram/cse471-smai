@@ -2,6 +2,7 @@ import os
 import pickle
 import numpy as np
 
+# Loads a specified batch from the cifar-10 dataset
 def load_cifar10_batch(filename):
     with open(filename, 'rb') as f:
         dict = pickle.load(f, encoding='latin1')
@@ -9,12 +10,11 @@ def load_cifar10_batch(filename):
     X = dict['data'].astype('float')
     Y = dict['labels']
 
-    #X = X.reshape(10000,3,32,32).transpose(0,2,3,1).astype('float')
     Y = np.array(Y)
 
     return X, Y
 
-
+# Loads all the batches of the cifar-10 dataset and returns them as np arrays
 def load_cifar10(path):
     Xs, Ys = [], []
 
