@@ -4,14 +4,14 @@ import numpy as np
 
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
 from sklearn.metrics import f1_score, accuracy_score
 
 import matplotlib.pyplot as plt
 
 plt.switch_backend('agg')
 parser = argparse.ArgumentParser()
-parser.add_argument("--best", help="Train LR classifier with pre-determined parameters and report test set accuracy", action="store_true")
+parser.add_argument("--best", help="Train svm classifier with pre-determined parameters and report test set accuracy", action="store_true")
 parser.add_argument("--search_c", help="Search for choice of regularization factor", action="store_true")
 parser.add_argument("--mean_sub", help="Perform mean subtraction on the features", action="store_true")
 parser.add_argument("--scaling", help="Scale features to [0 1] range", action="store_true")
@@ -38,16 +38,20 @@ if(args.mean_sub):
     Xte = Xte - mean_image
 
 if(args.pca):
-    pca = PCA(n_components=32)
+    print('Performing PCA on the samples')
+    pca = PCA(n_components=0.8)
     pca.fit(Xtr)
-    pca.transform(Xtr)
-    pca.transform(Xte)
+    print('Number of components used: {}'.format(pca.n_components_))
+    Xtr = pca.transform(Xtr)
+    Xte = pca.transform(Xte)
 
 if(args.lda):
-    lda = LDA(n_components=9) #TODO
+    print('Performing LDA on the samples')
+    lda = LDA()
     lda.fit(Xtr,Ytr)
-    lda.transform(Xtr)
-    lda.transform(Xte)
+    print('Number of components used: {}'.format(lda.explained_variance_ratio_.shape))
+    Xtr = lda.transform(Xtr)
+    Xte = lda.transform(Xte)
 
 # Small development set for quick hyperparameter search
 num_dev_samples = 5000
@@ -71,22 +75,31 @@ if(args.search_c):
     print('Running hyperparamer search with cross-validation for optimal C')
     print('Shape of train data: {}'.format(Xtr_dev.shape))
     print('Shape of train labels: {}'.format(Ytr_dev.shape))
-    lr = LogisticRegression()
+    lsvm = LinearSVC()
     best_mean_accuracy = 0
 
-    c_choices = [0.1, 1, 10, 100, 1000]
+    #c = 2**-5
+    #c_choices = [c]
+    #for i in range(6):
+        #c = c * (2**2)
+        #c_choices.append(c)
+
+    #c_choices = [c for i in range(10): c * (2**2)] #TODO
+    
+    c_choices = [0.001, 0.01, 0.1, 1, 2, 4]
+
     c_to_accuracies = {}
    
     for c in c_choices:
-        lr.set_params(C=c)
+        lsvm.set_params(C=c)
         c_accuracy = np.zeros(num_folds)
         for i in range(num_folds):
             tr_data = np.concatenate(Xtr_folds[:i]+Xtr_folds[i+1:])
             tr_labels = np.concatenate(Ytr_folds[:i]+Ytr_folds[i+1:])
             val_data = Xtr_folds[i]
             val_labels = Ytr_folds[i]
-            lr.fit(tr_data,tr_labels)
-            c_accuracy[i] = lr.score(val_data,val_labels)
+            lsvm.fit(tr_data,tr_labels)
+            c_accuracy[i] = lsvm.score(val_data,val_labels)
 
         if(np.mean(c_accuracy) >= best_mean_accuracy):
             best_mean_accuracy = np.mean(c_accuracy)
@@ -107,25 +120,25 @@ if(args.search_c):
     plt.title('Cross-validation on C')
     plt.xlabel('C')
     plt.ylabel('Accuracy')
-    plt.savefig('../plots/lreg-c.png',bbox_inches='tight')
+    plt.savefig('../plots/lsvm-c.png',bbox_inches='tight')
 
     print('Best choice for C from cross-validation: {}'.format(best_c))
 
 if(args.best):
 
-    print('Training LR with best choice of C')
+    print('Training LSVM with best choice of C')
     print('Shape of train data: {}'.format(Xtr.shape))
     print('Shape of train labels: {}'.format(Ytr.shape))
     print('Shape of test data: {}'.format(Xte.shape))
     print('Shape of test labels: {}'.format(Yte.shape))
 
-    best_lr = LogisticRegression()
-    best_c = 1
+    best_lsvm = LinearSVC()
+    best_c = 4
 
-    print('C = {}'.format(best_c))
+    print('C: {}'.format(best_c))
 
-    best_lr.set_params(C=best_c)
-    best_lr.fit(Xtr,Ytr)
-    Yte_pred = best_lr.predict(Xte)
-    print('Test set accuracy of best LR: {}'.format(accuracy_score(Yte,Yte_pred)))
-    print('Test set f1-score of best LR: {}'.format(f1_score(Yte,Yte_pred,average='macro')))
+    best_lsvm.set_params(C=best_c)
+    best_lsvm.fit(Xtr,Ytr)
+    Yte_pred = best_lsvm.predict(Xte)
+    print('Test set accuracy of best lsvm: {}'.format(accuracy_score(Yte,Yte_pred)))
+    print('Test set f1-score of best lsvm: {}'.format(f1_score(Yte,Yte_pred,average='macro')))

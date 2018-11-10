@@ -1,0 +1,10 @@
+Running hyperparamer search with cross-validation for optimal C
+Shape of train data: (5000, 3072)
+Shape of train labels: (5000,)
+c = 0.001, mean_accuracy = 0.2234
+c = 0.01, mean_accuracy = 0.2196
+c = 0.1, mean_accuracy = 0.2172
+c = 1, mean_accuracy = 0.2206
+c = 2, mean_accuracy = 0.2186
+c = 4, mean_accuracy = 0.2248
+Best choice for C from cross-validation: 4

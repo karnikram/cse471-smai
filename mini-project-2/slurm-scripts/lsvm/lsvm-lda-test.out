@@ -1,0 +1,10 @@
+Performing LDA on the samples
+Number of components used: (9,)
+Training LSVM with best choice of C
+Shape of train data: (5000, 3072)
+Shape of train labels: (5000,)
+Shape of test data: (1000, 3072)
+Shape of test labels: (1000,)
+C: 2
+Test set accuracy of best lsvm: 0.221
+Test set f1-score of best lsvm: 0.21911632279754906

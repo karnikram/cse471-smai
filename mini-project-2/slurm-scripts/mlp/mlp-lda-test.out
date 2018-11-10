@@ -1,0 +1,9 @@
+Performing LDA on the samples
+Number of components used: (9,)
+Training MLP with best choice of L,U,lr
+Shape of train data: (50000, 9)
+Shape of train labels: (50000,)
+Shape of test data: (10000, 9)
+Shape of test labels: (10000,)
+Test set accuracy of best mlp: 0.3149
+Test set f1-score of best mlp: 0.3150790944485596

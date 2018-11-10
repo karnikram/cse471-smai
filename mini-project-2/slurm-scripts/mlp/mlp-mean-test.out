@@ -1,0 +1,8 @@
+Performing mean subtraction on the samples
+Training MLP with best choice of L,U,lr
+Shape of train data: (50000, 3072)
+Shape of train labels: (50000,)
+Shape of test data: (10000, 3072)
+Shape of test labels: (10000,)
+Test set accuracy of best mlp: 0.5259
+Test set f1-score of best mlp: 0.5263754842732485

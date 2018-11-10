@@ -1,0 +1,8 @@
+Training LR with best choice of C
+Shape of train data: (50000, 3072)
+Shape of train labels: (50000,)
+Shape of test data: (10000, 3072)
+Shape of test labels: (10000,)
+C = 1e-07
+Test set accuracy of best LR: 0.4041
+Test set f1-score of best LR: 0.4002063301056338

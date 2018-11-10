@@ -1,0 +1,8 @@
+Running grid search with cross-validation for optimal C and gamma
+Shape of train data: (5000, 3072)
+Shape of train labels: (5000,)
+c = 1, g = 0.1, mean_accuracy = 0.1102
+c = 1, g = 1, mean_accuracy = 0.1102
+c = 10, g = 0.1, mean_accuracy = 0.1102
+c = 10, g = 1, mean_accuracy = 0.1102
+Best choice for C and gamma from cross-validation: 1, 0.1

@@ -39,16 +39,20 @@ if(args.mean_sub):
     Xte = Xte - mean_image
 
 if(args.pca):
-    pca = PCA(n_components=32)
+    print('Performing PCA on the samples')
+    pca = PCA(n_components=0.9)
     pca.fit(Xtr)
-    pca.transform(Xtr)
-    pca.transform(Xte)
+    print('Number of components used: {}'.format(pca.n_components_))
+    Xtr = pca.transform(Xtr)
+    Xte = pca.transform(Xte)
 
 if(args.lda):
-    lda = LDA(n_components=9) #TODO
+    print('Performing LDA on the samples')
+    lda = LDA()
     lda.fit(Xtr,Ytr)
-    lda.transform(Xtr)
-    lda.transform(Xte)
+    print('Number of components used: {}'.format(lda.explained_variance_ratio_.shape))
+    Xtr = lda.transform(Xtr)
+    Xte = lda.transform(Xte)
 
 # Small development set for quick hyperparameter search
 num_dev_samples = 5000
@@ -78,8 +82,7 @@ if(args.search_lu):
 
     lu_to_accuracies = {}
     u_choices = [50,100,500,1000]
-    #l_choices = [1,2,3,4]
-    l_choices = [5,6,7,8]
+    l_choices = [1,2,3,4]
 
     for u in u_choices:
         for l in l_choices:

@@ -1,0 +1,9 @@
+Performing PCA on the samples
+Number of components used: 99
+Training MLP with best choice of L,U,lr
+Shape of train data: (50000, 99)
+Shape of train labels: (50000,)
+Shape of test data: (10000, 99)
+Shape of test labels: (10000,)
+Test set accuracy of best mlp: 0.5026
+Test set f1-score of best mlp: 0.502553498128745

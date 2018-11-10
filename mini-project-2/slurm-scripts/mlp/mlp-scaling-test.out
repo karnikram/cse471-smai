@@ -1,0 +1,10 @@
+Performing feature scaling to [0 1]
+Training MLP with best choice of L,U,lr
+Shape of train data: (50000, 3072)
+Shape of train labels: (50000,)
+Shape of test data: (10000, 3072)
+Shape of test labels: (10000,)
+L,U: 4 1000
+lr: 0.001
+Test set accuracy of best mlp: 0.4966
+Test set f1-score of best mlp: 0.4933819279517608
