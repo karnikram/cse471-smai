@@ -1,0 +1,10 @@
+Performing LDA on the samples
+Number of components used: (9,)
+Training SVM with best choice of C and gamma
+Shape of train data: (50000, 9)
+Shape of train labels: (50000,)
+Shape of test data: (10000, 9)
+Shape of test labels: (10000,)
+C: 2, gamma:1e-07
+Test set accuracy of best svm: 0.3473
+Test set f1-score of best svm: 0.34506090951371343

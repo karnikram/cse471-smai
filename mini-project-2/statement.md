@@ -1,7 +1,7 @@
 # Mini Project-2
 
 
-* Deadline: November 5, 2018
+* Deadline: ~~November 5, 2018~~ November 11, 2018
 
 ## Data
 

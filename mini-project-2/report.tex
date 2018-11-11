@@ -90,7 +90,6 @@ For instance, in the case of MLP this occurs when the number of layers is too la
 \includegraphics[scale=0.5]{mlp-overfit.png}
 \end{center}
 
-
 We avoid overfitting by limiting the representational capacity of the model, in the case of MLP this would be the number of layers, and by introducing regularizer terms to increase the preference for certain kind of functions.
 \section*{Results}
 
@@ -148,7 +147,7 @@ Next, after fixing \texttt{hidden\_layer\_sizes} to $4 * (1000,)$ the learning r
 \includegraphics[scale=0.6]{mlp-lr.png}
 \end{center}
 
-Next, after fixing both the arguments, the model was tested with different feature representations. The results are as follows,
+Next, after fixing both the arguments to the found values, the model was tested with different feature representations. The results are as follows,
 
 \begin{center}
   \begin{tabular}{|c|c|c|}
@@ -208,7 +207,7 @@ Next, after fixing C to be equal to $4$, the model was tested with different fea
 
 \subsection*{Non-linear Kernel Support Vector Machine}
 
-A kernel SVM model was implemented using the \texttt{SVC} class in sklearn. The model uses the rbf kernel and is based on libsvm. The accuracy score of the default model was found to be $0.1120$.
+A kernel SVM model was implemented using the \texttt{SVC} class in sklearn. The model uses the rbf kernel and is based on libsvm. The accuracy score of the default model was found to be $0.1477$.
 
 The C parameter, and the $\gamma$ parameter of the rbf kernel are then tuned together using grid search. After initial testing the model was found to perform well for very small $\gamma$ values, so C was searched for over the range $[1,2,4,8]$ and $\gamma$ over the range $[10^{-9},10^{-8},10^{-7},10^{-6}]$.
 
@@ -247,10 +246,10 @@ Kernel SVM seemed to be the most sensitive to hyperparameter changes. Next, afte
     Representation & Accuracy & F1-score \\
     \hline
     Raw & 0.5679 & 0.5673\\
-    Scaled & 0.3980 & 0.3815\\
-    Mean centered & 0.4001 & 0.3920\\
-    PCA & 0.3654 & 0.3423\\
-    LDA & 0.3549 & 0.3412 \\
+    Scaled & 0.2529 & 0.2034\\
+    Mean centered & 0.5679 & 0.5673\\
+    PCA & 0.5560 & 0.5550\\
+    LDA & 0.3473 & 0.3450\\
     \hline
   \end{tabular}
 \end{center}
