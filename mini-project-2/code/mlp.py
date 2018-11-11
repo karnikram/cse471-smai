@@ -18,6 +18,7 @@ parser.add_argument("--mean_sub", help="Perform mean subtraction on the features
 parser.add_argument("--scaling", help="Scale features to [0 1] range", action="store_true")
 parser.add_argument("--pca", help="Perform PCA on features", action="store_true")
 parser.add_argument("--lda", help="Perform LDA on features", action="store_true")
+parser.add_argument("--overfit", help="Simple example to show overfitting", action="store_true")
 
 args = parser.parse_args()
 
@@ -173,3 +174,43 @@ if(args.best):
     Yte_pred = best_mlp.predict(Xte)
     print('Test set accuracy of best mlp: {}'.format(accuracy_score(Yte,Yte_pred)))
     print('Test set f1-score of best mlp: {}'.format(f1_score(Yte,Yte_pred,average='macro')))
+
+if(args.overfit):
+   
+    print('Show simple example of overfitting by varying L')
+    np.random.seed(28)
+    mask = np.random.choice(num_train_samples, 1000, replace=False)
+    Xtr_dev = Xtr[mask]
+    Ytr_dev = Ytr[mask]
+
+    np.random.seed(28)
+    mask = np.random.choice(num_test_samples, 500, replace=False)
+    Xte_dev = Xte[mask]
+    Yte_dev = Yte[mask]
+
+    print('Shape of train data: {}'.format(Xtr_dev.shape))
+    print('Shape of train labels: {}'.format(Ytr_dev.shape))
+    print('Shape of test data: {}'.format(Xte_dev.shape))
+    print('Shape of test labels: {}'.format(Yte_dev.shape))
+
+    mlp = MLPClassifier()
+    u = 50
+    train_scores = []
+    test_scores = []
+
+    for l in range(25):
+        mlp.set_params(hidden_layer_sizes=(u,) * (l+1))
+        mlp.fit(Xtr_dev,Ytr_dev)
+        train_scores.append(mlp.score(Xtr_dev,Ytr_dev))
+        test_scores.append(mlp.score(Xte_dev,Yte_dev))
+
+    plt.title('Overfitting in MLP')
+    plt.plot(train_scores,label='Train error')
+    plt.plot(test_scores,label='Test error') 
+    plt.xlabel('# of layers')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.savefig('../plots/mlp-overfit.png',bbox_inches='tight')
+
+    print(train_scores)
+    print(test_scores)

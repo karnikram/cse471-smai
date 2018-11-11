@@ -7,4 +7,4 @@
 #SBATCH --mail-type=END
 
 cd ../../code
-python linear_svm.py --search_c > ../slurm-scripts/logreg/lr-c-search.out
+python mlp.py --overfit > ../slurm-scripts/mlp/mlp-overfit.out

@@ -79,11 +79,8 @@ if(args.search_cg):
     svm = SVC()
     best_mean_accuracy = 0
 
-    #c_choices = [0.0001, 0.01, 0.1, 1, 10]
-    c_choices = [1, 10]
-    #c_choices = [0.1, 1, 2, 4, 8]
-    #g_choices = [0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
-    g_choices = [0.1, 1]
+    c_choices = [1,2,4,8]
+    g_choices = [1e-6, 1e-7,1e-8,1e-9]
 
     cg_to_accuracies = {}
 
@@ -119,13 +116,13 @@ if(args.best):
     print('Shape of test labels: {}'.format(Yte.shape))
 
     best_svm = SVC()
-    best_c = 3
-    best_g = 1000
+    best_c = 2
+    best_g = 1e-7
 
     print('C: {}, gamma:{}'.format(best_c,best_g))
 
     best_svm.set_params(C=best_c,gamma=best_g)
-    #best_svm.fit(Xtr,Ytr)
+    best_svm.fit(Xtr,Ytr)
     Yte_pred = best_svm.predict(Xte)
     print('Test set accuracy of best svm: {}'.format(accuracy_score(Yte,Yte_pred)))
     print('Test set f1-score of best svm: {}'.format(f1_score(Yte,Yte_pred,average='macro')))

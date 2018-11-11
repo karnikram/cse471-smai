@@ -1,10 +1,10 @@
 Performing PCA on the samples
-Number of components used: 33
+Number of components used: 99
 Training LSVM with best choice of C
-Shape of train data: (5000, 3072)
-Shape of train labels: (5000,)
-Shape of test data: (1000, 3072)
-Shape of test labels: (1000,)
-C: 2
-Test set accuracy of best lsvm: 0.221
-Test set f1-score of best lsvm: 0.21911632279754906
+Shape of train data: (50000, 99)
+Shape of train labels: (50000,)
+Shape of test data: (10000, 99)
+Shape of test labels: (10000,)
+C: 4
+Test set accuracy of best lsvm: 0.195
+Test set f1-score of best lsvm: 0.18378805448455557

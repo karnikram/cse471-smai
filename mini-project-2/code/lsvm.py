@@ -39,7 +39,7 @@ if(args.mean_sub):
 
 if(args.pca):
     print('Performing PCA on the samples')
-    pca = PCA(n_components=0.8)
+    pca = PCA(n_components=0.9)
     pca.fit(Xtr)
     print('Number of components used: {}'.format(pca.n_components_))
     Xtr = pca.transform(Xtr)

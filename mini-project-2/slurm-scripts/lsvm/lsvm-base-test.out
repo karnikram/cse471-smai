@@ -1,0 +1,8 @@
+Training LSVM with best choice of C
+Shape of train data: (50000, 3072)
+Shape of train labels: (50000,)
+Shape of test data: (10000, 3072)
+Shape of test labels: (10000,)
+C: 4
+Test set accuracy of best lsvm: 0.1954
+Test set f1-score of best lsvm: 0.16994766785087656
