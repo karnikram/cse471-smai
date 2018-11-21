@@ -12,8 +12,9 @@ Course offered at IIIT Hyderabad during the Monsoon - 18 semester.
 [hw-4](./hw4/): Weighted MSE<br>
 [hw-5](./hw5/): Gradient descent and its convergence properties<br>
 [hw-8](./hw8/): Logistic regression, Bayes classifier <br>
-hw-10: Principal Component Analysis<br>
-hw-13: Support vector machines<br>
+[hw-9](./hw9): Logistic regression, Multiclass classification <br>
+[hw-10](./hw9/): Principal Component Analysis<br>
+[hw-13](./hw13/): Support vector machines<br>
 [hw-14](./hw14/): Support vector machines<br>
 [hw-15](./hw15/): Kernels<br>
 [hw-16](./hw16/): LDA, and Perceptron neuron<br>
